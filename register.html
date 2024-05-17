@@ -1,0 +1,152 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="login1.css">
+    <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="images/hungry.png">
+    <script src="jquery.min.js"></script>
+</head>
+<style>
+.register {
+  background-color:rgba(203, 222, 203, 0.5);
+  width: 400px;
+  border: 5px solid black;
+  padding: 50px;
+  margin-left: 520px;
+  margin-top: 100px;
+
+}
+.just{
+ text-align: center;
+}
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  line-height: 0.7 ;
+}
+button[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+body {
+  background-image: url('images/wallpaper1.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  }
+  
+</style>
+<script>
+    $(function () {
+
+
+        $("#password_error_message").hide();
+        $("#retype_password_error_message").hide();
+
+
+        var error_password = false;
+        var error_retype_password = false;
+
+
+
+        $("#form_password").focusout(function () {
+            check_password();
+        });
+        $("#form_retype_password").focusout(function () {
+            check_retype_password();
+        });
+
+
+
+
+        function check_password() {
+            var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+            var password_value = $("#form_password").val();
+            //var password_length = $("#form_password").val().length;
+            if (password_value.match(pattern)) {
+                $("#password_error_message").hide();
+                $("#form_password").css("border-bottom", "2px solid #34F458");
+
+            } else {
+                $("#password_error_message").html("Atleast 8 Characters with number,symbol,capital and small letter");
+                $("#password_error_message").show();
+                $("#form_password").css("border-bottom", "2px solid #F90A0A");
+                error_password = true;
+
+            }
+        }
+
+        function check_retype_password() {
+            var password = $("#form_password").val();
+            var retype_password = $("#form_retype_password").val();
+            if (password === retype_password) {
+                $("#retype_password_error_message").hide();
+                $("#form_retype_password").css("border-bottom", "2px solid #34F458");
+
+            } else {
+                $("#retype_password_error_message").html("Passwords Did not Matched");
+                $("#retype_password_error_message").show();
+                $("#form_retype_password").css("border-bottom", "2px solid #F90A0A");
+                error_retype_password = true;
+            }
+        }
+
+
+        $("#registration_form").submit(function () {
+
+            error_password = false;
+            error_retype_password = false;
+
+            check_password();
+            check_retype_password();
+
+
+            if (error_password === false && error_retype_password === false) {
+                //alert("Registration Successfully");
+                return true;
+            } else {
+                alert("Please Fill the form Correctly");
+                return false;
+            }
+        });
+    });
+</script>
+
+<body>
+
+   <div class = "register"> 
+    <form method="post" action="register.php" id="registration_form">
+        <h2>REGISTER</h2>
+
+        <label>Username</label><br>
+        <input type="text" name="username" required />
+        <label>Password</label><br>
+        <input type="text"  class="input" name="password" id="form_password">
+            <span class="error_form" id="password_error_message"></span><br>
+        <label>Retype Password</label><br>
+        <input type="text"  class="input" name="password1" id="form_retype_password">
+            <span class="error_form" id="retype_password_error_message"></span><br>
+        <labe>Email</labe><br>
+        <input type="text" name="email" id="emel" required>
+        <labe>Address</labe><br>
+        <input type="text" name="address" id="address" required>
+        <button type="submit" name="submit">Register</button>
+        <div class="just">
+        <a href="login.html" style="font-size: 15px; margin-top: 10px;">Sign in?</a>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>

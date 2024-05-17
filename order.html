@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Order</title>
+    <script src="jquery.min.js"></script>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid black;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        
+        background-color: #04AA6D;
+        color: white;
+    }
+    td {
+        
+        background-color:rgb(173, 229, 175, 0.5);
+        color: black;
+    }
+    body {
+  background-image: url('images/wallpaper2.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  }
+  .design1{
+     color: white;
+     font-weight: bold;
+  }
+  .design2{
+    margin-left: -38px;
+    
+
+  }
+  .design3{
+    width: 250px;
+    color: white;
+    margin-left: 0px;
+  }
+  .design4{
+    border: 2px solid white; /* Border styling */
+    padding: 10px; /* Padding around the content */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: fit-content; /* Adjust width to fit content */
+    margin-left: 30px;
+  }
+  #size{
+  width: 500px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  background-color:rgb(173, 229, 175, 0.5);
+  }
+  #button{
+    background-color:rgb(173, 229, 175, 0.5);
+    width: 300px;
+    height: 30px;
+    font-weight: bold;
+  }
+  
+</style>
+</style>
+<body>
+    <div style="display: inline-block;">
+        <h1 style="color: white; display: inline;">Order Your Pizza</h1>
+        <button onclick="window.location.href='logout.php';" style="display: inline; background-color: rgb(173, 229, 175, 0.5); width: 100px; height: 30px; margin-left: 1150px;">Log Out</button>
+    </div>
+    <form action="process_order.php" method="post" id="orderForm">
+        <br>
+        <table>
+            <tr>
+                <th>Pizza</th>
+                <th>Information</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Basic Pizza"> Basic Pizza</td>
+                <td><img src="images/basic.jpeg" height="100" width="100"> <br>Basic Pizza contain vegetables and cheese only!</td>
+                
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Vegie Lover"> Veggie Lover</td>
+                <td><img src="images/vegie.jpeg" height="100" width="100"> <br>Veggie Lover Pizza contain vegetables, mushrooms and cheese only!</td>
+                
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Cheese Sensation"> Cheese Sensation</td>
+                <td><img src="images/sensation.jpeg" height="100" width="100"> <br>Cheese Sensation Pizza contain mozirella thick cheese only!</td>
+                
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Aloha Chicken"> Aloha Chicken</td>
+                <td><img src="images/chciken.jpeg" height="100" width="100"> <br>Aloha Chicken Pizza contain creamy chicken and cheese only!</td>
+                
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Aloha Beef"> Aloha Beef</td>
+                <td><img src="images/beef.jpeg" height="100" width="100"> <br>Aloha Beef Pizza contain creamy chicken and cheese only!</td>
+                
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="pizza[]" value="Crunchy Cheese"> Crunchy Cheese</td>
+                <td><img src="images/crunchy.jpeg" height="100" width="100"> <br>Crunchy Cheese Pizza contain cheese with crunch bread only!</td>
+                
+            </tr>
+        </table>
+        <div class="design1">
+        <p>NOTE: Only the basic pizza is same price as the chosen size. Other pizza choices will add on RM 5 </p>
+        </div>
+        <br>
+        <div class="design4">
+        <div class="design2">
+        <label for="size">Size:</label>
+        <select name="size" id="size" >
+            <option value="small" data-price="10">Small - $10</option>
+            <option value="medium" data-price="15">Medium - $15</option>
+            <option value="large" data-price="20">Large - $20</option>
+        </select>
+        </div>
+        <br>
+        <div class="design3">
+        <label for="toppings">Toppings:</label><br><br>
+        <input type="checkbox" name="toppings[]" value="pepperoni"> Pepperoni<br>
+        <input type="checkbox" name="toppings[]" value="mushrooms"> Mushrooms<br>
+        <input type="checkbox" name="toppings[]" value="onions"> Onions<br>
+        <input type="checkbox" name="toppings[]" value="sausage"> Sausage<br>
+        <input type="checkbox" name="toppings[]" value="bacon"> Bacon<br>
+        </div>
+        <br>
+        <input type="button" value="Add to Cart" onclick="addToCart()" id="button">
+        </div>
+    </form>
+
+<!-- JavaScript to calculate total price -->
+<script>
+    function addToCart() {
+        var formData = new FormData();
+        var size = document.getElementById("size").value;
+        var price = parseInt(document.getElementById("size").options[document.getElementById("size").selectedIndex].getAttribute("data-price"));
+        var pizzaCheckboxes = document.getElementsByName("pizza[]");
+        var toppingsCheckboxes = document.getElementsByName("toppings[]");
+
+        // Collect selected pizzas
+        for (var i = 0; i < pizzaCheckboxes.length; i++) {
+            if (pizzaCheckboxes[i].checked) {
+                formData.append("pizza[]", pizzaCheckboxes[i].value);
+                if (pizzaCheckboxes[i].value !== "Basic Pizza") {
+                    price += 5; // Additional RM 5 for each special pizza
+                }
+            }
+        }
+
+        // Collect selected toppings
+        for (var i = 0; i < toppingsCheckboxes.length; i++) {
+            if (toppingsCheckboxes[i].checked) {
+                formData.append("toppings[]", toppingsCheckboxes[i].value);
+                price += 2; // Additional RM 2 for each topping
+            }
+        }
+
+        var total = price;
+
+        // Append other form data
+        formData.append("size", size);
+        formData.append("total", total);
+
+        // Send data to process_order.php
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "process_order.php", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                window.location.href = "cart.php";
+            }
+        };
+
+        // Send form data
+        xhr.send(formData);
+    }
+</script>
+
+    
+    
+</body>
+</html>
